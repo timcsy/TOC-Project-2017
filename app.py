@@ -1,3 +1,5 @@
+from config import *
+
 import sys
 from io import BytesIO
 
@@ -5,10 +7,6 @@ import telegram
 from flask import Flask, request, send_file
 
 from fsm import TocMachine
-
-
-API_TOKEN = 'Your Telegram API Token'
-WEBHOOK_URL = 'Your Webhook URL'
 
 app = Flask(__name__)
 bot = telegram.Bot(token=API_TOKEN)
