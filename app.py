@@ -8,6 +8,8 @@ from flask import Flask, request, send_file
 
 from fsm import TocMachine
 
+import json
+
 app = Flask(__name__)
 bot = telegram.Bot(token=API_TOKEN)
 machine = TocMachine(
@@ -56,7 +58,7 @@ def _set_webhook():
 @app.route('/hook', methods=['POST'])
 def webhook_handler():
     update = telegram.Update.de_json(request.get_json(force=True), bot)
-    print(update)
+    json.dumps(update)
     machine.advance(update)
     return 'ok'
 
