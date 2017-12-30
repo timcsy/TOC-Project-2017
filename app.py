@@ -73,3 +73,4 @@ def show_fsm():
 if __name__ == "__main__":
     _set_webhook()
     app.run()
+    bot.send_message(chat_id=236304646, text="I'm sorry Dave I'm afraid I can't do that.")
