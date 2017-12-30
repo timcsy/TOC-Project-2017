@@ -86,5 +86,5 @@ def show_fsm():
 
 if __name__ == "__main__":
     _set_webhook()
-    MainTask(bot).start
+    MainTask(bot).start()
     app.run(threaded=True)
