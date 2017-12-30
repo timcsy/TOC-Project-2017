@@ -38,11 +38,13 @@ class MainTask(threading.Thread):
 			]
 			reply_markup = telegram.InlineKeyboardMarkup(build_menu(button_list, n_cols=2))
 			self.bot.send_message(chat_id=236304646, text="A two-column menu",
-														reply_markup=[
-															[telegram.InlineKeyboardButton("col1", callback_data='col1callbacktest'),
-															telegram.InlineKeyboardButton("col2", callback_data='col2callbacktest')],
-															[telegram.InlineKeyboardButton("row 2", callback_data='row2callbacktest')]
-														])
+														reply_markup=telegram.InlineKeyboardMarkup(
+															inline_keyboard=[
+																[telegram.InlineKeyboardButton("col1", callback_data='col1callbacktest'),
+																telegram.InlineKeyboardButton("col2", callback_data='col2callbacktest')],
+																[telegram.InlineKeyboardButton("row 2", callback_data='row2callbacktest')]
+															]
+														))
 			self.bot.send_message(chat_id=236304646, text='testing custom keyboard',
                             reply_markup=telegram.ReplyKeyboardMarkup(
                                 keyboard=[
