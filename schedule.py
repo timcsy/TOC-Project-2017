@@ -41,6 +41,10 @@ class MainTask(threading.Thread):
 			self.bot.sendMessage(chat_id=236304646, text='testing custom keyboard',
                             reply_markup=telegram.ReplyKeyboardMarkup(
                                 keyboard=[
-                                    [telegram.KeyboardButton(text="Yes"), telegram.KeyboardButton(text="No")]
-                                ]
+                                    ['太','初','有','道','，'],
+																		['道','就','是','神','，'],
+																		['這','道','太','初','與','神','同','在','。']
+                                ],
+																resize_keyboard=True,
+																one_time_keyboard=True
                             ))
