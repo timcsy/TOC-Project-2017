@@ -38,3 +38,9 @@ class MainTask(threading.Thread):
 			]
 			reply_markup = telegram.InlineKeyboardMarkup(build_menu(button_list, n_cols=2))
 			self.bot.send_message(chat_id=236304646, text="A two-column menu", reply_markup=reply_markup)
+			self.bot.sendMessage(chat_id=236304646, text='testing custom keyboard',
+                            reply_markup=telegram.ReplyKeyboardMarkup(
+                                keyboard=[
+                                    [telegram.KeyboardButton(text="Yes"), telegram.KeyboardButton(text="No")]
+                                ]
+                            ))
