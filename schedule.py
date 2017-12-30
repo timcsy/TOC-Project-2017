@@ -31,8 +31,7 @@ class MainTask(threading.Thread):
 		while True:
 			s = input('sent to client > ')
 			if s == '/exit':
-				print('exit')
-				sys.exit()
+				break
 			self.bot.send_message(chat_id=236304646, text=s)
 			button_list = [
 				telegram.InlineKeyboardButton("col1", callback_data='col1callbacktest'),
