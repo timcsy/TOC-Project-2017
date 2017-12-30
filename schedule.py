@@ -6,9 +6,6 @@ class MainTask(threading.Thread):
         self.bot = bot
     
     def run(self):
-        i = 0
         while True:
-            print('main')
-            self.bot.send_message(chat_id=236304646, text="I'm sorry Song Yu I'm afraid I can't do that.{0}".format(i))
-            i = i + 1
-            time.sleep(10)
+            s = input('sent to client > ')
+            self.bot.send_message(chat_id=236304646, text=s)

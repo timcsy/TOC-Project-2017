@@ -1,0 +1,82 @@
+BibleMapping = {
+
+};
+
+Bible = {
+	version: '',
+	language: 'zh-tw',
+	name: '',
+	text: '',
+	book = [
+		Gen = {
+			id = 1,
+			name = {
+				en = 'Gen',
+				tw = '創世記'
+			}
+			chapters = [
+				{
+					id = 1,
+					chapter = 1,
+					from = 0,
+					to = 10132,
+					verse_num = 31,
+					verses = [
+
+					]
+				}
+			]
+		},
+	],
+	find = (){};
+}
+
+Identity = {
+	type: String
+	(info): {}
+}
+
+User = {
+	(identities): Identity[]
+	(info): {}
+}
+
+Group = {
+	type: String
+	(members): (User|Group)[]
+	(info): {}
+}
+
+Prayer = {
+	owner: Identity
+	from: (User|Group)[]
+	to: (User|Group)[]
+	(title): String
+	type: String
+	replies: Reply[]
+	prayed: User[]
+	remain: []
+	hidden: []
+	(text)
+	(image)
+	(sound)
+	(file)
+	createdTime: Time
+	editedTime: Time
+	expiredTime: Time
+	priority: 1(lowest)-5(highest)
+	public: Boolean
+	closed: Boolean
+}
+
+Reply = {
+	from: User
+	to: (User|Group)[]
+	(text)
+	(image)
+	(sound)
+	(file)
+	createdTime: Time
+	editedTime: Time
+	public: Boolean
+}

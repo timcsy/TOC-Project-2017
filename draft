@@ -5,10 +5,15 @@ Bible
 	explanation
 	suggestion
 	plan
+	使用兩兩Mapping的方式，有一個中繼Map(最小公倍數)
 Pray
 	group
 	privacy
 	acknowledge
+	remind
+	reply
+	take photo
+	remind verse
 Hymn
 	searching - Youtube API
 	suggestion
