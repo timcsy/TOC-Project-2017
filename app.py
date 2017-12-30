@@ -160,8 +160,6 @@ def show_fsm():
 
 
 if __name__ == "__main__":
-    main_task = MainTask(bot)
-    main_task.start()
     _set_webhook()
+    MainTask(bot).start()
     app.run(threaded=True)
-    main_task.join()
