@@ -146,7 +146,7 @@ def _set_webhook():
 @app.route('/hook', methods=['POST'])
 def webhook_handler():
     update = telegram.Update.de_json(request.get_json(force=True), bot)
-    print(update.message.chat_id)
+    print(update)
     machine.advance(bot, update)
     return 'ok'
 
