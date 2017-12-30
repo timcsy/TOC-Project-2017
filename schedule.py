@@ -1,4 +1,4 @@
-import threading, time
+import threading, time, sys
 from datetime import datetime
 import sched
 import telegram
@@ -30,6 +30,8 @@ class MainTask(threading.Thread):
 	def run(self):
 		while True:
 			s = input('sent to client > ')
+			if s == '/exit':
+				sys.exit(1)
 			self.bot.send_message(chat_id=236304646, text=s)
 			button_list = [
 				telegram.InlineKeyboardButton("col1", callback_data='col1callbacktest'),
