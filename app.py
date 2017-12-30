@@ -12,9 +12,101 @@ machine = TocMachine(
     states=[
         'user',
         'state1',
-        'state2'
+        'state2',
+        'instruction',
+        'start',
+        'pray',
+        'pray_view',
+        'pray_reply',
+        'pray_prayed',
+        'pray_remain',
+        'pray_hidden',
+        'pray_remind',
+        'pray_my_pray',
+        'pray_add',
+        'pray_edit',
+        'pray_remove',
+        'pray_close'
     ],
     transitions=[
+        ['start', 'instruction' , 'start'],
+        {
+            'trigger': 'go_back',
+            'source': [
+                'start'
+            ],
+            'dest': 'instruction'
+        },
+        ['pray', 'start' , 'pray'],
+        {
+            'trigger': 'go_back',
+            'source': [
+                'pray'
+            ],
+            'dest': 'start'
+        },
+        ['pray_add', 'pray' , 'pray_add'],
+        {
+            'trigger': 'pray_view',
+            'source': [
+                'pray'
+                'pray_remind',
+                'pray_my_pray',
+                'pray_add'
+            ],
+            'dest': 'pray_view'
+        },
+        ['pray_reply', 'pray_view' , 'pray_reply'],
+        ['pray_prayed', 'pray_view' , 'pray_prayed'],
+        ['pray_remain', 'pray_view' , 'pray_remain'],
+        ['pray_hidden', 'pray_view' , 'pray_hidden'],
+        {
+            'trigger': 'go_back',
+            'source': [
+                'pray_reply',
+                'pray_prayed',
+                'pray_remain',
+                'pray_hidden'
+            ],
+            'dest': 'pray_view'
+        },
+        {
+            'trigger': 'pray_remind',
+            'source': [
+                'pray'
+                'pray_view',
+                'pray_my_pray'
+            ],
+            'dest': 'pray_remind'
+        },
+        ['pray_my_pray', 'pray' , 'pray_my_pray'],
+        ['pray_edit', 'pray_my_pray' , 'pray_edit'],
+        ['pray_remove', 'pray_my_pray' , 'pray_remove'],
+        ['pray_close', 'pray_my_pray' , 'pray_close'],
+        {
+            'trigger': 'go_back',
+            'source': [
+                'pray_edit',
+                'pray_remove',
+                'pray_close',
+            ],
+            'dest': 'pray_my_pray'
+        },        
+        {
+            'trigger': 'go_back',
+            'source': [
+                'pray_view',
+                'pray_remind',
+                'pray_my_pray',
+                'pray_add'
+            ],
+            'dest': 'pray'
+        },
+        
+        
+
+
+        
         {
             'trigger': 'advance',
             'source': 'user',
