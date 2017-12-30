@@ -8,7 +8,20 @@ from flask import Flask, request, send_file
 
 from fsm import TocMachine
 
-import time
+import threading, time
+
+class MainTask(threading.Thread):
+    def __init__(self, bot):
+        threading.Thread.__init__(self)
+        self.bot = bot
+    
+    def run(self):
+        i = 0
+        while True:
+            print('main')
+            self.bot.send_message(chat_id=236304646, text="I'm sorry Song Yu I'm afraid I can't do that." + i)
+            i = i + 1
+            time.sleep(10)
 
 app = Flask(__name__)
 bot = telegram.Bot(token=API_TOKEN)
@@ -59,9 +72,6 @@ def _set_webhook():
 def webhook_handler():
     update = telegram.Update.de_json(request.get_json(force=True), bot)
     print(update.message.chat_id)
-    while True:
-        print('hook\n')
-        time.sleep(2)
     machine.advance(update)
     return 'ok'
 
@@ -71,13 +81,10 @@ def show_fsm():
     byte_io = BytesIO()
     machine.graph.draw(byte_io, prog='dot', format='png')
     byte_io.seek(0)
-    while True:
-        print('show-fsm\n')
-        time.sleep(2)
     return send_file(byte_io, attachment_filename='fsm.png', mimetype='image/png')
 
 
 if __name__ == "__main__":
     _set_webhook()
-    bot.send_message(chat_id=236304646, text="I'm sorry Song Yu I'm afraid I can't do that.")
+    MainTask(bot).start
     app.run(threaded=True)
