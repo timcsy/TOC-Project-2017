@@ -1,6 +1,7 @@
 import threading, time
 from datetime import datetime
 import sched
+import telegram
 
 # class Scheduler:
 # 		def __init__(self):
@@ -31,9 +32,9 @@ class MainTask(threading.Thread):
 			s = input('sent to client > ')
 			self.bot.send_message(chat_id=236304646, text=s)
 			button_list = [
-				InlineKeyboardButton("col1", callback_data='col1callbacktest'),
-				InlineKeyboardButton("col2", callback_data='col2callbacktest'),
-				InlineKeyboardButton("row 2", callback_data='row2callbacktest')
+				telegram.InlineKeyboardButton("col1", callback_data='col1callbacktest'),
+				telegram.InlineKeyboardButton("col2", callback_data='col2callbacktest'),
+				telegram.InlineKeyboardButton("row 2", callback_data='row2callbacktest')
 			]
-			reply_markup = InlineKeyboardMarkup(util.build_menu(button_list, n_cols=2))
-			bot.send_message(chat_id=236304646, text="A two-column menu", reply_markup=reply_markup)
+			reply_markup = telegram.InlineKeyboardMarkup(build_menu(button_list, n_cols=2))
+			self.bot.send_message(chat_id=236304646, text="A two-column menu", reply_markup=reply_markup)

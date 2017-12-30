@@ -18,7 +18,6 @@ class TocMachine(GraphMachine):
 
     def on_enter_state1(self, bot, update):
         update.message.reply_text("I'm entering state1")
-        updates = bot.get_updates()
         bot.send_message(chat_id=236304646, text="waited so long")
         bot.send_message(chat_id=236304646, text=updates.message.text)
         self.go_back(update)
