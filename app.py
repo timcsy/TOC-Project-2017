@@ -106,7 +106,7 @@ machine = TocMachine(
         
 
 
-        
+
         {
             'trigger': 'advance',
             'source': 'user',
@@ -147,7 +147,7 @@ def _set_webhook():
 def webhook_handler():
     update = telegram.Update.de_json(request.get_json(force=True), bot)
     print(update.message.chat_id)
-    machine.advance(update)
+    machine.advance(bot, update)
     return 'ok'
 
 
