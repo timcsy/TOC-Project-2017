@@ -43,7 +43,7 @@ class MainTask(threading.Thread):
 				break
 			elif s == '/add':
 				task_name = input('enter name: ')
-				scheduler.add_task(Task(task_name))
+				Scheduler.add_task(Task(task_name))
 			self.bot.send_message(chat_id=236304646, text=s)
 			self.bot.send_message(chat_id=236304646, text="A two-column menu",
 														reply_markup=telegram.InlineKeyboardMarkup(
