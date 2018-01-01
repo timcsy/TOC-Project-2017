@@ -39,7 +39,7 @@ class Scheduler:
 		next_time = task.next_time()
 		heapq.heappush(self.queue, (now + next_time, task))
 		if len(self.queue) == 1:
-			threading.Timer(0, self.run).start()
+			threading.Timer(next_time, self.run).start()
 
 	def cancel(self, task):
 		task.canceled = True
