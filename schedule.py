@@ -45,18 +45,18 @@ class Scheduler:
 		task.canceled = True
 	
 	def run(self):
-		timestamp, task = heapq.heappop(self.queue)
 		while len(self.queue) > 0 and self.queue[0][1].canceled == True:
 			heapq.heappop(self.queue)
 		if len(self.queue) > 0:
+			timestamp, task = heapq.heappop(self.queue)
 			now = time.time()
 			next_time = 0
 			if self.queue[0][0] > now:
 				next_time = self.queue[0][0] - now
 			threading.Timer(next_time, self.run).start()
-		task.start()
-		if task.canceled != True:
-			self.add(task)
+			task.start()
+			if task.canceled != True:
+				self.add(task)
 	
 	def list_tasks(self):
 		for i in range(len(self.queue)):
