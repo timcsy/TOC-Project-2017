@@ -17,6 +17,13 @@ def handle_task(task):
 class Task:
 	def __init__(self, name):
 		self.name = name
+		self.canceled = False
+
+	def next_time(self):
+		return 5
+
+	def start(self):
+		print("Task " + self.name)
 	
 	# def handle(self, scheduler):
 	# 	scheduler.enter(5, 0, self.handle, argument=(scheduler,))
@@ -24,14 +31,36 @@ class Task:
 
 
 class Scheduler:
-		def __init__(self):
-			pass
+	def __init__(self):
+		self.queue = []
 		
-		def add_task(task, interval):
-			pass
-			# heapq.heappush(queue)
-			
-			# threading.Timer(5, handle_task).start()
+	def add(self, task):
+		now = time.time()
+		next_time = task.next_time()
+		heapq.heappush(self.queue, (now + next_time, task))
+		if len(self.queue) == 1:
+			threading.Timer(0, self.run).start()
+
+	def cancel(self, task):
+		task.canceled = True
+	
+	def run(self):
+		timestamp, task = heapq.heappop(self.queue)
+		while len(self.queue) > 0 and self.queue[0][1].canceled == True:
+			heapq.heappop(self.queue)
+		if len(self.queue) > 0:
+			now = time.time()
+			next_time = 0
+			if self.queue[0][0] > now:
+				next_time = self.queue[0][0] - now
+			threading.Timer(next_time, self.run).start()
+		task.start()
+		if task.canceled != True:
+			self.add(task)
+	
+	def handle(self):
+		pass
+		# threading.Timer(5, handle_task).start()
 
 class MainTask(threading.Thread):
 	def __init__(self, bot):
@@ -39,16 +68,14 @@ class MainTask(threading.Thread):
 		self.bot = bot
 	
 	def run(self):
-		self.scheduler = sched.scheduler(time.time, time.sleep)
-		
+		scheduler = Scheduler()
 		while True:
 			s = input('sent to client > ')
 			if s == '/exit':
 				break
 			elif s == '/add':
 				task_name = input('enter name: ')
-				self.scheduler.enter(5, 0, handle_task, argument=(Task(task_name),))
-				self.scheduler.run()
+				scheduler.add(Task(task_name))
 				# Scheduler.add_task(Task(task_name))
 			self.bot.send_message(chat_id=236304646, text=s)
 			self.bot.send_message(chat_id=236304646, text="A two-column menu",
