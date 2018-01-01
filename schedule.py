@@ -3,16 +3,27 @@ from datetime import datetime
 import sched
 import telegram
 
-# class Scheduler:
-# 		def __init__(self):
-# 				self.scheduler = sched.scheduler(time.time, time.sleep)
+class Task:
+	def __init__(self, name):
+		self.name = name
+	
+	def handle(self, scheduler):
+		scheduler.enter(5, 0, self.handle, argument=(scheduler,))
+		print('Task' + self.name)
+
+
+class Scheduler:
+		def __init__(self):
+				self.scheduler = sched.scheduler(time.time, time.sleep)
+				self.queue = []
 		
-# 		def add_task(period, action, *args=(), **kwargs={}):
-# 				# action is function
-# 				# period is second
-# 				self.scheduler.enter(period, 0, add_task, args, kwargs)
-# 				action()
-# 				self.bot.send_message(chat_id=236304646, text=s)
+		def add_task(self, task):
+				self.queue.append(task)
+
+		def run(self):
+			while len(self.queue) != 0:
+				task = self.queue.pop(0)
+				task.handle(self.scheduler)
 
 class MainTask(threading.Thread):
 	def __init__(self, bot):
@@ -20,10 +31,15 @@ class MainTask(threading.Thread):
 		self.bot = bot
 	
 	def run(self):
+		scheduler = Scheduler()
+		scheduler.run()
 		while True:
 			s = input('sent to client > ')
 			if s == '/exit':
 				break
+			elif s == '/add':
+				task_name = input('enter name: ')
+				scheduler.add_task(Task(task_name))
 			self.bot.send_message(chat_id=236304646, text=s)
 			self.bot.send_message(chat_id=236304646, text="A two-column menu",
 														reply_markup=telegram.InlineKeyboardMarkup(
