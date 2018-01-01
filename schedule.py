@@ -60,7 +60,7 @@ class Scheduler:
 	
 	def list_tasks(self):
 		for i in range(len(self.queue)):
-			print(str(i) + self.queue[i].name)
+			print(str(i) + self.queue[1][i].name)
 		# threading.Timer(5, handle_task).start()
 
 class MainTask(threading.Thread):
