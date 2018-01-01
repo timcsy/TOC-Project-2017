@@ -28,6 +28,7 @@ class Scheduler:
 			pass
 		
 		def add_task(task, interval):
+			pass
 			# heapq.heappush(queue)
 			
 			# threading.Timer(5, handle_task).start()
