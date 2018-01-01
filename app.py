@@ -5,7 +5,7 @@ import telegram
 from flask import Flask, request, send_file
 from fsm import *
 from schedule import *
-from message import Message
+from message import *
 
 app = Flask(__name__)
 bot = telegram.Bot(token=TELEGRAM_API_TOKEN)
