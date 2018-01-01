@@ -18,7 +18,9 @@ class Scheduler:
 				self.queue = []
 		
 		def add_task(self, task):
-				self.queue.append(task)
+			self.queue.append(task)
+			if len(self.queue) == 1:
+				self.run()
 
 		def run(self):
 			while len(self.queue) != 0:
