@@ -58,8 +58,9 @@ class Scheduler:
 		if task.canceled != True:
 			self.add(task)
 	
-	def handle(self):
-		pass
+	def list_tasks(self):
+		for i in range(len(self.queue)):
+			print(str(i) + self.queue[i].name)
 		# threading.Timer(5, handle_task).start()
 
 class MainTask(threading.Thread):
@@ -77,22 +78,25 @@ class MainTask(threading.Thread):
 				task_name = input('enter name: ')
 				scheduler.add(Task(task_name))
 				# Scheduler.add_task(Task(task_name))
-			self.bot.send_message(chat_id=236304646, text=s)
-			self.bot.send_message(chat_id=236304646, text="A two-column menu",
-														reply_markup=telegram.InlineKeyboardMarkup(
-															inline_keyboard=[
-																[telegram.InlineKeyboardButton("col1", callback_data='col1callbacktest'),
-																telegram.InlineKeyboardButton("col2", callback_data='col2callbacktest')],
-																[telegram.InlineKeyboardButton("row 2", callback_data='row2callbacktest')]
-															]
-														))
-			self.bot.send_message(chat_id=236304646, text='testing custom keyboard',
-                            reply_markup=telegram.ReplyKeyboardMarkup(
-                                keyboard=[
-                                    ['太','初','有','道','，'],
-																		['道','就','是','神','，'],
-																		['這','道','太','初','與','神','同','在','。']
-                                ],
-																resize_keyboard=True,
-																one_time_keyboard=True
-                            ))
+			elif s == '/list':
+				scheduler.list_tasks()
+			else:
+				self.bot.send_message(chat_id=236304646, text=s)
+				self.bot.send_message(chat_id=236304646, text="A two-column menu",
+															reply_markup=telegram.InlineKeyboardMarkup(
+																inline_keyboard=[
+																	[telegram.InlineKeyboardButton("col1", callback_data='col1callbacktest'),
+																	telegram.InlineKeyboardButton("col2", callback_data='col2callbacktest')],
+																	[telegram.InlineKeyboardButton("row 2", callback_data='row2callbacktest')]
+																]
+															))
+				self.bot.send_message(chat_id=236304646, text='testing custom keyboard',
+															reply_markup=telegram.ReplyKeyboardMarkup(
+																	keyboard=[
+																			['太','初','有','道','，'],
+																			['道','就','是','神','，'],
+																			['這','道','太','初','與','神','同','在','。']
+																	],
+																	resize_keyboard=True,
+																	one_time_keyboard=True
+															))
