@@ -3,9 +3,13 @@ from datetime import datetime
 import sched
 import telegram
 
-def handle_task(scheduler, task):
-	scheduler.enter(5, 0, handle_task, argument=(scheduler, task,))
+
+
+def handle_task():
+	scheduler.enter(5, 0, handle_task)
+	task = queue.pop(0)
 	print('Task' + task.name)
+	queue.append(task)
 
 class Task:
 	def __init__(self, name):
@@ -18,18 +22,12 @@ class Task:
 
 class Scheduler:
 		def __init__(self):
-				self.scheduler = sched.scheduler(time.time, time.sleep)
-				self.queue = []
+				scheduler = sched.scheduler(time.time, time.sleep)
+				queue = []
 		
 		def add_task(self, task):
-			self.queue.append(task)
-			if len(self.queue) == 1:
-				self.run()
-
-		def run(self):
-			while len(self.queue) != 0:
-				task = self.queue.pop(0)
-				handle_task(self.scheduler, task)
+			queue.append(task)
+			handle_task()
 
 class MainTask(threading.Thread):
 	def __init__(self, bot):
