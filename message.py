@@ -9,4 +9,4 @@ class Message:
 	
 	def get_chat(self):
 		if self.bot_type == 'Telegram':
-			return self.message.chat.id
+			return self.message.message.chat.id
