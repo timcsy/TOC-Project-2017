@@ -3,7 +3,8 @@ from datetime import datetime
 import sched
 import telegram
 
-
+scheduler = sched.scheduler(time.time, time.sleep)
+queue = []
 
 def handle_task():
 	scheduler.enter(5, 0, handle_task)
@@ -15,15 +16,14 @@ class Task:
 	def __init__(self, name):
 		self.name = name
 	
-	def handle(self, scheduler):
-		scheduler.enter(5, 0, self.handle, argument=(scheduler,))
-		print('Task' + self.name)
+	# def handle(self, scheduler):
+	# 	scheduler.enter(5, 0, self.handle, argument=(scheduler,))
+	# 	print('Task' + self.name)
 
 
 class Scheduler:
 		def __init__(self):
-				scheduler = sched.scheduler(time.time, time.sleep)
-				queue = []
+			pass
 		
 		def add_task(self, task):
 			queue.append(task)
@@ -35,8 +35,8 @@ class MainTask(threading.Thread):
 		self.bot = bot
 	
 	def run(self):
-		scheduler = Scheduler()
-		scheduler.run()
+		# scheduler = Scheduler()
+		# scheduler.run()
 		while True:
 			s = input('sent to client > ')
 			if s == '/exit':
