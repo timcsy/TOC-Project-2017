@@ -36,7 +36,7 @@ class MainTask(threading.Thread):
 	
 	def run(self):
 		# scheduler = Scheduler()
-		# scheduler.run()
+		scheduler.run()
 		while True:
 			s = input('sent to client > ')
 			if s == '/exit':
