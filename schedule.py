@@ -3,6 +3,10 @@ from datetime import datetime
 import sched
 import telegram
 
+def handle_task(scheduler, task):
+	scheduler.enter(5, 0, handle_task, argument=(scheduler, task,))
+	print('Task' + task.name)
+
 class Task:
 	def __init__(self, name):
 		self.name = name
@@ -25,7 +29,7 @@ class Scheduler:
 		def run(self):
 			while len(self.queue) != 0:
 				task = self.queue.pop(0)
-				task.handle(self.scheduler)
+				handle_task(self.scheduler, task)
 
 class MainTask(threading.Thread):
 	def __init__(self, bot):
