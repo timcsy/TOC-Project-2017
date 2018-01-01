@@ -4,6 +4,7 @@ from io import BytesIO
 import telegram
 from flask import Flask, request, send_file
 from fsm import *
+from crossbot import *
 from schedule import *
 from message import *
 
