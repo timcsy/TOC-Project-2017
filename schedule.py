@@ -1,15 +1,14 @@
-import threading, time, sys
+import threading
+import time, sys
 from datetime import datetime
-import sched
 import telegram
 
-scheduler = sched.scheduler(time.time, time.sleep)
 queue = []
 
 def handle_task():
-	scheduler.enter(5, 0, handle_task)
 	task = queue.pop(0)
 	print('Task' + task.name)
+	threading.Timer(5, handle_task).start()
 	queue.append(task)
 
 class Task:
@@ -27,7 +26,7 @@ class Scheduler:
 		
 		def add_task(task):
 			queue.append(task)
-			handle_task()
+			threading.Timer(5, handle_task).start()
 
 class MainTask(threading.Thread):
 	def __init__(self, bot):
@@ -35,8 +34,6 @@ class MainTask(threading.Thread):
 		self.bot = bot
 	
 	def run(self):
-		# scheduler = Scheduler()
-		scheduler.run()
 		while True:
 			s = input('sent to client > ')
 			if s == '/exit':
