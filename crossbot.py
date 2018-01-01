@@ -23,7 +23,7 @@ class MainTask(threading.Thread):
 	def receive(self, message):
 		self.queue.append(message)
 		self.bot.send_message(chat_id=message.get_chat(), text=message.get_text())
-		self.queue.pop(message)
+		# self.queue.pop(message)
 	
 	def run(self):
 		scheduler = Scheduler()
