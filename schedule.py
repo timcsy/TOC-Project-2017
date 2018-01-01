@@ -1,15 +1,18 @@
-import threading
+import threading, sched
+import heapq
 import time, sys
 from datetime import datetime
 import telegram
 
 queue = []
 
-def handle_task():
-	task = queue.pop(0)
+
+def handle_task(task):
+	# task = queue.pop(0)
 	print('Task' + task.name)
-	threading.Timer(5, handle_task).start()
-	queue.append(task)
+	scheduler.enter(5, 0, handle_task, argument=(task,))
+	# threading.Timer(5, handle_task).start()
+	# queue.append(task)
 
 class Task:
 	def __init__(self, name):
@@ -24,9 +27,10 @@ class Scheduler:
 		def __init__(self):
 			pass
 		
-		def add_task(task):
-			queue.append(task)
-			threading.Timer(5, handle_task).start()
+		def add_task(task, interval):
+			# heapq.heappush(queue)
+			
+			# threading.Timer(5, handle_task).start()
 
 class MainTask(threading.Thread):
 	def __init__(self, bot):
@@ -34,13 +38,16 @@ class MainTask(threading.Thread):
 		self.bot = bot
 	
 	def run(self):
+		scheduler = sched.scheduler(time.time, time.sleep)
+		scheduler.run(blocking=False)
 		while True:
 			s = input('sent to client > ')
 			if s == '/exit':
 				break
 			elif s == '/add':
 				task_name = input('enter name: ')
-				Scheduler.add_task(Task(task_name))
+				scheduler.enter(5, 0, handle_task, argument=(Task(task_name),))
+				# Scheduler.add_task(Task(task_name))
 			self.bot.send_message(chat_id=236304646, text=s)
 			self.bot.send_message(chat_id=236304646, text="A two-column menu",
 														reply_markup=telegram.InlineKeyboardMarkup(
