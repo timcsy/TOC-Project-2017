@@ -4,31 +4,16 @@ import time, sys
 from datetime import datetime
 import telegram
 
-queue = []
-
-
-def handle_task(task):
-	# task = queue.pop(0)
-	print('Task' + task.name)
-	# scheduler.enter(5, 0, handle_task, argument=(task,))
-	# threading.Timer(5, handle_task).start()
-	# queue.append(task)
-
 class Task:
 	def __init__(self, name):
 		self.name = name
 		self.canceled = False
 
-	def next_time(self):
-		return 5
-
 	def start(self):
 		print("Task " + self.name)
-	
-	# def handle(self, scheduler):
-	# 	scheduler.enter(5, 0, self.handle, argument=(scheduler,))
-	# 	print('Task' + self.name)
 
+	def next_time(self):
+		return 5
 
 class Scheduler:
 	def __init__(self):
@@ -61,12 +46,17 @@ class Scheduler:
 	def list_tasks(self):
 		for i in range(len(self.queue)):
 			print(str(i) + ': ' + self.queue[i][1].name)
-		# threading.Timer(5, handle_task).start()
 
 class MainTask(threading.Thread):
 	def __init__(self, bot):
 		threading.Thread.__init__(self)
 		self.bot = bot
+		self.queue = []
+	
+	def receive(self, message):
+		self.queue.append(message)
+		self.bot.send_message(chat_id=message.get_chat(), text=message.get_text())
+		self.queue.pop(message)
 	
 	def run(self):
 		scheduler = Scheduler()
