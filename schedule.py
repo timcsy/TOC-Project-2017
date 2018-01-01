@@ -51,7 +51,7 @@ class Scheduler:
 			timestamp, task = heapq.heappop(self.queue)
 			now = time.time()
 			next_time = 0
-			if self.queue[0][0] > now:
+			if len(self.queue) > 0 and self.queue[0][0] > now:
 				next_time = self.queue[0][0] - now
 			threading.Timer(next_time, self.run).start()
 			task.start()
