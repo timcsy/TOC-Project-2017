@@ -10,7 +10,7 @@ queue = []
 def handle_task(task):
 	# task = queue.pop(0)
 	print('Task' + task.name)
-	scheduler.enter(5, 0, handle_task, argument=(task,))
+	# scheduler.enter(5, 0, handle_task, argument=(task,))
 	# threading.Timer(5, handle_task).start()
 	# queue.append(task)
 
@@ -48,7 +48,7 @@ class MainTask(threading.Thread):
 			elif s == '/add':
 				task_name = input('enter name: ')
 				self.scheduler.enter(5, 0, handle_task, argument=(Task(task_name),))
-				self.scheduler.run(blocking=False)
+				self.scheduler.run()
 				# Scheduler.add_task(Task(task_name))
 			self.bot.send_message(chat_id=236304646, text=s)
 			self.bot.send_message(chat_id=236304646, text="A two-column menu",
