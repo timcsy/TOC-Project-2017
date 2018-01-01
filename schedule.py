@@ -40,7 +40,7 @@ class MainTask(threading.Thread):
 	
 	def run(self):
 		scheduler = sched.scheduler(time.time, time.sleep)
-		scheduler.run(blocking=False)
+		
 		while True:
 			s = input('sent to client > ')
 			if s == '/exit':
@@ -48,6 +48,7 @@ class MainTask(threading.Thread):
 			elif s == '/add':
 				task_name = input('enter name: ')
 				scheduler.enter(5, 0, handle_task, argument=(Task(task_name),))
+				scheduler.run(blocking=False)
 				# Scheduler.add_task(Task(task_name))
 			self.bot.send_message(chat_id=236304646, text=s)
 			self.bot.send_message(chat_id=236304646, text="A two-column menu",
