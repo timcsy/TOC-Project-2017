@@ -60,7 +60,7 @@ class Scheduler:
 	
 	def list_tasks(self):
 		for i in range(len(self.queue)):
-			print(str(i) + self.queue[i][1].name)
+			print(str(i) + ': ' + self.queue[i][1].name)
 		# threading.Timer(5, handle_task).start()
 
 class MainTask(threading.Thread):
@@ -80,6 +80,10 @@ class MainTask(threading.Thread):
 				# Scheduler.add_task(Task(task_name))
 			elif s == '/list':
 				scheduler.list_tasks()
+			elif s == '/cancel':
+				n = input('Please enter the task number: ')
+				task_num = int(n)
+				scheduler.cancel(scheduler.queue[task_num][1])
 			else:
 				self.bot.send_message(chat_id=236304646, text=s)
 				self.bot.send_message(chat_id=236304646, text="A two-column menu",
