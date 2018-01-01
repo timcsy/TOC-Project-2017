@@ -25,7 +25,7 @@ class Scheduler:
 		def __init__(self):
 			pass
 		
-		def add_task(self, task):
+		def add_task(task):
 			queue.append(task)
 			handle_task()
 
