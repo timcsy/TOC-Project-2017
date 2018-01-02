@@ -10,8 +10,8 @@ class MainActor(pykka.ThreadingActor):
 		self.actors.append(actor)
 		print('Registered ' + str(actor.get_id().get()))
 		s = actor.wait().get()
-		print('Read' + s.text)
-		actor.send_message(s.text)
+		print('Read' + s)
+		actor.send_message(s)
 
 app = Flask(__name__)
 
