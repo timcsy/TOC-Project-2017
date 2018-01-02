@@ -7,14 +7,14 @@ import telegram
 class Task:
 	def __init__(self, bot, interval):
 		self.bot = bot
-		self.interval = interval * 60
+		self.interval = interval
 		self.canceled = False
 		
 	def start(self):
 		self.bot.send_text("Task " + str(self.interval) + ' expired')
 
 	def next_time(self):
-		return self.interval
+		return self.interval * 60
 
 class Scheduler:
 	def __init__(self):
