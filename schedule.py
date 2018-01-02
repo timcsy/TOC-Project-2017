@@ -7,7 +7,7 @@ import telegram
 class Task:
 	def __init__(self, bot, interval):
 		self.bot = bot
-		self.interval = interval
+		self.interval = interval * 60
 		self.canceled = False
 		
 	def start(self):
