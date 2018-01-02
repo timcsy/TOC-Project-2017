@@ -11,8 +11,8 @@ class ScheduleActor(pykka.ThreadingActor):
 
 	def on_receive(self, message):
 		print(message)
-		msg = message.msg
-		
+		msg = message['msg']
+		print(msg)
 		return message
 		if self.state == 'start':
 			if msg == 'add':
