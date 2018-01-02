@@ -27,4 +27,4 @@ if __name__ == "__main__":
 	bot = telegram.Bot(token=TELEGRAM_API_TOKEN)
 	tele_bot = TelegramBot.start(bot).proxy()
 	
-	app.run(threaded=True)
+	app.run()
