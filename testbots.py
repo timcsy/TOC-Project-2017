@@ -6,7 +6,7 @@ tele_bot = TelegramBot().start()
 
 @app.route('/hook', methods=['POST'])
 def webhook_handler():
-	update = telegram.Update.de_json(request.get_json(force=True), tele_bot.bot)
+	update = telegram.Update.de_json(request.get_json(force=True), tele_bot.get_bot())
 	tele_bot.tell(update)
 	return 'ok'
 

@@ -19,3 +19,6 @@ class TelegramBot(pykka.ThreadingActor):
 	
 	def on_receive(self, message):
 		print(message)
+
+	def get_bot(self):
+		return self.bot
