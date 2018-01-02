@@ -8,7 +8,7 @@ class MainActor(pykka.ThreadingActor):
 
 	def register(self, actor):
 		self.actors.append(actor)
-		print('Registered' + str(actor.get_id().get()))
+		print('Registered ' + str(actor.get_id().get()))
 		s = actor.wait().get()
 		print('Read' + s.text)
 		actor.send_message(s.text)
