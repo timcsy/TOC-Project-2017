@@ -22,14 +22,18 @@ class TelegramBot(pykka.ThreadingActor):
 		print(message)
 
 class Greeter(pykka.ThreadingActor):
-    def on_receive(self, message):
-        return 'Hi there!'
+	def __init__(self):
+		super(Greeter, self).__init__()
+	
+	def on_receive(self, message):
+		return 'Hi there!'
 
 
 
 app = Flask(__name__)
 bot = telegram.Bot(token=TELEGRAM_API_TOKEN)
 tele_bot = TelegramBot.start(bot)
+actor_ref = Greeter.start()
 
 @app.route('/hook', methods=['POST'])
 def webhook_handler():
@@ -38,7 +42,6 @@ def webhook_handler():
 	return 'ok'
 
 if __name__ == "__main__":
-	actor_ref = Greeter.start()
 	answer = actor_ref.ask({'msg': 'Hi?'})
 	print(answer)
 	tele_bot.tell('Hello')
