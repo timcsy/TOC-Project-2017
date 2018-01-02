@@ -10,3 +10,7 @@ class Message:
 	def get_chat(self):
 		if self.bot_type == 'Telegram':
 			return self.message.message.chat.id
+	
+	def get_sender(self):
+		if self.bot_type == 'Telegram':
+			return self.message.message['from'].id
