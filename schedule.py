@@ -5,15 +5,17 @@ from datetime import datetime
 import telegram
 
 class Task:
-	def __init__(self, name):
+	def __init__(self, bot, name, interval):
+		self.bot = bot
 		self.name = name
+		self.interval = interval
 		self.canceled = False
-
+		
 	def start(self):
-		print("Task " + self.name)
+		self.bot.send_text("Task " + self.name)
 
 	def next_time(self):
-		return 5
+		return self.interval
 
 class Scheduler:
 	def __init__(self):

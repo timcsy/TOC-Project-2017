@@ -3,11 +3,11 @@ import pykka
 import telegram
 import sys
 import threading
+from actors import *
 
 class TelegramBot(pykka.ThreadingActor):
-	def __init__(self, bot, main_actor):
+	def __init__(self, bot):
 		super(TelegramBot, self).__init__()
-		self.main_actor = main_actor
 		self.bot = bot
 		self.chats = {}
 		self._set_webhook()
@@ -22,13 +22,9 @@ class TelegramBot(pykka.ThreadingActor):
 	
 	def update(self, update):
 		chat_id = update.message.chat.id
-		if chat_id in self.chats:
-			self.chats[chat_id].update(update).get()
-		else:
-			chat_actor = TelegramChatActor.start(self, chat_id, self.main_actor).proxy()
-			self.chats[chat_id] = chat_actor
-			self.main_actor.register(chat_actor)
-			# chat_actor.update(update)
+		if not chat_id in self.chats:
+			self.chats[chat_id] = TelegramChatActor.start(self, chat_id).proxy()
+		self.chats[chat_id].update(update).get()
 		print(update)
 	
 	def send_text(self, chat_id, message):
@@ -37,33 +33,21 @@ class TelegramBot(pykka.ThreadingActor):
 
 
 class TelegramChatActor(pykka.ThreadingActor):
-	def __init__(self, parent, id, main_actor):
+	def __init__(self, tele_bot, id):
 		super(TelegramChatActor, self).__init__()
-		self.parent = parent
-		self.main_actor = main_actor
+		self.tele_bot = tele_bot
 		self.id = id
-		self.updated = threading.Event()
-		self.updated.clear()
-		self.buffer = None
-
+		self.state = 'start'
+	
 	def update(self, update):
 		text = update.message.text
-		chat_id = update.message.chat.id
-		self.buffer = {'id': chat_id, 'text': text}
-		print(self.buffer)
-		self.updated.set()
-	
+		if self.state == 'start':
+			if text == '/schedule':
+				self.schedule_actor = ScheduleActor.start(self)
+				self.state == 'schedule'
+		elif self.state == 'schedule':
+			self.schedule_actor.tell({'msg': text})
+
 	def send_text(self, message):
 		print('children send ' + message)
-		self.parent.send_text(self.id, message)
-
-	def get_id(self):
-		return self.id
-	
-	def wait(self):
-		print('waiting')
-		self.updated.wait()
-		print('finish waiting')
-		print(self.buffer)
-		self.updated.clear()
-		return self.buffer
+		self.tele_bot.send_text(self.id, message)
