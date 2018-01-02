@@ -20,7 +20,7 @@ class TelegramBot(pykka.ThreadingActor):
 	
 	def on_receive(self, message):
 		update = message.update
-		print(update)
+		print(update.message.text)
 
 
 
