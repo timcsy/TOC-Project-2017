@@ -46,7 +46,7 @@ class TelegramChatActor(pykka.ThreadingActor):
 			if text == '/schedule':
 				self.schedule_actor = ScheduleActor.start(self)
 				print('ScheduleActor created')
-				self.state == 'schedule'
+				self.state = 'schedule'
 		elif self.state == 'schedule':
 			print('TelegramChatActor received: ' + text)
 			self.schedule_actor.tell({'msg': text})
