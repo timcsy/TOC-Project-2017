@@ -18,4 +18,7 @@ class TelegramBot(pykka.ThreadingActor):
 			print('Your webhook URL has been set to "{}"'.format(TELEGRAM_WEBHOOK_URL))
 	
 	def update(self, update):
+		text = update.message.text
+		chat_id = update.message.chat.id
+		self.bot.send_message(chat_id, text)
 		print(update)
