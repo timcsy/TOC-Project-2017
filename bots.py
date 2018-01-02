@@ -9,7 +9,6 @@ class TelegramBot(pykka.ThreadingActor):
 		super(TelegramBot, self).__init__()
 		self.main_actor = main_actor
 		self.bot = bot
-		self.in_future = self.actor_ref.proxy()
 		self.chats = {}
 		self._set_webhook()
 
@@ -26,7 +25,7 @@ class TelegramBot(pykka.ThreadingActor):
 		if chat_id in self.chats:
 			self.chats[chat_id].update(update)
 		else:
-			chat_actor = TelegramChatActor.start(self.in_future, chat_id, self.main_actor).proxy()
+			chat_actor = TelegramChatActor.start(self.attr_ref.proxy(), chat_id, self.main_actor).proxy()
 			self.main_actor.register(chat_actor)
 			self.chats[chat_id] = chat_actor
 			chat_actor.update(update)
@@ -42,7 +41,6 @@ class TelegramChatActor(pykka.ThreadingActor):
 		self.parent = parent
 		self.main_actor = main_actor
 		self.id = id
-		self.in_future = self.actor_ref.proxy()
 		self.updated = threading.Event()
 		self.buffer = None
 
