@@ -17,5 +17,5 @@ class TelegramBot(pykka.ThreadingActor):
 		else:
 			print('Your webhook URL has been set to "{}"'.format(TELEGRAM_WEBHOOK_URL))
 	
-	def get_update(self, update):
+	def update(self, update):
 		print(update)
