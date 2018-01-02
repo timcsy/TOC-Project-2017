@@ -38,7 +38,8 @@ actor_ref = Greeter.start()
 @app.route('/hook', methods=['POST'])
 def webhook_handler():
 	update = telegram.Update.de_json(request.get_json(force=True), bot)
-	tele_bot.tell(update)
+	answer = tele_bot.ask(update)
+	print(answer)
 	return 'ok'
 
 if __name__ == "__main__":
