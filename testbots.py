@@ -2,11 +2,12 @@ from flask import Flask, request, send_file
 from bots import *
 
 app = Flask(__name__)
-tele_bot = TelegramBot.start()
+bot = telegram.Bot(token=TELEGRAM_API_TOKEN)
+tele_bot = TelegramBot.start(bot)
 
 @app.route('/hook', methods=['POST'])
 def webhook_handler():
-	update = telegram.Update.de_json(request.get_json(force=True), tele_bot.proxy().get_bot().get())
+	update = telegram.Update.de_json(request.get_json(force=True), bot)
 	tele_bot.tell(update)
 	return 'ok'
 

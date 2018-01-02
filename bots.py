@@ -4,9 +4,9 @@ import telegram
 import sys
 
 class TelegramBot(pykka.ThreadingActor):
-	def __init__(self):
+	def __init__(self, bot):
 		super(TelegramBot, self).__init__()
-		self.bot = telegram.Bot(token=TELEGRAM_API_TOKEN)
+		self.bot = bot
 		self._set_webhook()
 
 	def _set_webhook(self):
