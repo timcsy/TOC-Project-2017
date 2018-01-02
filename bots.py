@@ -52,6 +52,9 @@ class TelegramChatActor(pykka.ThreadingActor):
 	
 	def send_text(self, message):
 		self.parent.send_message(self.id, message)
+
+	def get_id(self):
+		return id
 	
 	def wait(self):
 		self.updated.wait()
