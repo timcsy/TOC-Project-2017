@@ -6,14 +6,11 @@ class ScheduleActor(pykka.ThreadingActor):
 	def __init__(self, bot):
 		super(ScheduleActor, self).__init__()
 		self.bot = bot
-		# self.scheduler = Scheduler()
+		self.scheduler = Scheduler()
 		self.state = 'start'
 
 	def on_receive(self, message):
-		print(message)
 		msg = message['msg']
-		print(msg)
-		return message
 		if self.state == 'start':
 			if msg == 'add':
 				self.state = 'add'
