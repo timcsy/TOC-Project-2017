@@ -26,9 +26,9 @@ class TelegramBot(pykka.ThreadingActor):
 			self.chats[chat_id].update(update)
 		else:
 			chat_actor = TelegramChatActor.start(self.actor_ref.proxy(), chat_id, self.main_actor).proxy()
-			self.main_actor.register(chat_actor)
+			self.main_actor.register(chat_actor).get()
 			self.chats[chat_id] = chat_actor
-			chat_actor.update(update)
+			chat_actor.update(update).get()
 		print(update)
 	
 	def send_text(self, chat_id, message):
@@ -53,7 +53,7 @@ class TelegramChatActor(pykka.ThreadingActor):
 		self.updated.set()
 	
 	def send_text(self, message):
-		self.parent.send_message(self.id, message)
+		self.parent.send_message(self.id, message).get()
 
 	def get_id(self):
 		return self.id
