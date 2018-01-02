@@ -49,7 +49,7 @@ class TelegramChatActor(pykka.ThreadingActor):
 				self.state = 'schedule'
 		elif self.state == 'schedule':
 			print('TelegramChatActor received: ' + text)
-			self.schedule_actor.tell({'msg': text})
+			self.schedule_actor.ask({'msg': text})
 
 	def send_text(self, message):
 		print('children send ' + message)
