@@ -5,14 +5,13 @@ from datetime import datetime
 import telegram
 
 class Task:
-	def __init__(self, bot, name, interval):
+	def __init__(self, bot, interval):
 		self.bot = bot
-		self.name = name
 		self.interval = interval
 		self.canceled = False
 		
 	def start(self):
-		self.bot.send_text("Task " + self.name)
+		self.bot.send_text("Task " + str(self.interval) + 'expired')
 
 	def next_time(self):
 		return self.interval

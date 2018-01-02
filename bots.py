@@ -24,12 +24,9 @@ class TelegramBot(pykka.ThreadingActor):
 		chat_id = update.message.chat.id
 		if not chat_id in self.chats:
 			self.chats[chat_id] = TelegramChatActor.start(self, chat_id).proxy()
-			print('TelegramChatActor created for chat: ' + str(chat_id))
 		self.chats[chat_id].update(update).get()
-		print(update)
 	
 	def send_text(self, chat_id, message):
-		print('parent send text ' + message)
 		self.bot.send_message(chat_id, message)
 
 
@@ -45,12 +42,10 @@ class TelegramChatActor(pykka.ThreadingActor):
 		if self.state == 'start':
 			if text == '/schedule':
 				self.schedule_actor = ScheduleActor.start(self)
-				print('ScheduleActor created')
+				self.send_text('Welcome to Scheduler,\ntpye the following words,\nadd: to adda task\ncancel: to cancel a task\nlist: list tasks')
 				self.state = 'schedule'
 		elif self.state == 'schedule':
-			print('TelegramChatActor received: ' + text)
 			self.schedule_actor.tell({'msg': text})
 
 	def send_text(self, message):
-		print('children send ' + message)
 		self.tele_bot.send_text(self.id, message)

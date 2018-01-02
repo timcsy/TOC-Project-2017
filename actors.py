@@ -14,15 +14,15 @@ class ScheduleActor(pykka.ThreadingActor):
 		if self.state == 'start':
 			if msg == 'add':
 				self.state = 'add'
-				self.bot.send_text('enter name: ')
+				self.bot.send_text('enter interval: ')
 			elif msg == 'list':
 				self.scheduler.list_tasks()
 			elif msg == 'cancel':
 				self.state = 'cancel'
 				self.bot.send_text('Please enter the task number: ')
 		elif self.state == 'add':
-			task_name = msg
-			self.scheduler.add(Task(self.bot, task_name, 10))
+			interval = int(msg)
+			self.scheduler.add(Task(self.bot, interval))
 			self.state = 'start'
 		elif self.state == 'cancel':
 			task_num = int(msg)
