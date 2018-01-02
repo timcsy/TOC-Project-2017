@@ -19,7 +19,7 @@ class ScheduleActor(pykka.ThreadingActor):
 				list = self.scheduler.list_tasks()
 				s = ''
 				for i in range(len(list)):
-					s += str(i) + ': ' + str(list[i][1].interval)
+					s += str(i) + ': ' + str(list[i][1].interval) + '\n'
 				self.bot.send_text(s)
 			elif msg == 'cancel':
 				self.state = 'cancel'
