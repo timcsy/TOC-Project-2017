@@ -61,5 +61,6 @@ class TelegramChatActor(pykka.ThreadingActor):
 	def wait(self):
 		print('waiting')
 		self.updated.wait()
+		print('finish waiting')
 		self.updated.clear()
 		return self.buffer
