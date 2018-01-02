@@ -3,7 +3,8 @@ from bots import *
 import pykka
 
 app = Flask(__name__)
-
+bot = telegram.Bot(token=TELEGRAM_API_TOKEN)
+tele_bot = TelegramBot.start(bot)
 
 @app.route('/hook', methods=['POST'])
 def webhook_handler():
@@ -12,7 +13,6 @@ def webhook_handler():
 	return 'ok'
 
 if __name__ == "__main__":
-	bot = telegram.Bot(token=TELEGRAM_API_TOKEN)
-	tele_bot = TelegramBot.start(bot)
+	tele_bot.tell('Hello')
 	app.run()
 	tele_bot.stop()
