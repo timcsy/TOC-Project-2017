@@ -13,4 +13,5 @@ def webhook_handler():
 if __name__ == "__main__":
 	bot = telegram.Bot(token=TELEGRAM_API_TOKEN)
 	tele_bot = TelegramBot.start(bot)
-	app.run(threaded=True)
+	app.run()
+	tele_bot.stop()
