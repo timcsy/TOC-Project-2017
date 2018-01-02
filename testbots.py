@@ -1,6 +1,18 @@
 from flask import Flask, request, send_file
 from bots import *
 
+class MainActor(pykka.ThreadingActor):
+	def __init__(self):
+		super(MainActor, self).__init__()
+		self.actors = []
+
+	def register(self, actor):
+		self.actors.append(actor)
+		print('Registered' + str(actor.id))
+		s = actor.wait()
+		print('Read' + s.text)
+		actor.send_message(s.text)
+
 app = Flask(__name__)
 
 @app.route('/hook', methods=['POST'])
@@ -10,7 +22,10 @@ def webhook_handler():
 	return 'ok'
 
 if __name__ == "__main__":
+	main_actor = MainActor.start().proxy()
+
 	bot = telegram.Bot(token=TELEGRAM_API_TOKEN)
-	tele_bot = TelegramBot.start(bot).proxy()
+	tele_bot = TelegramBot.start(bot, main_actor).proxy()
+	
 	app.run()
 	pykka.ActorRegistry.stop_all()

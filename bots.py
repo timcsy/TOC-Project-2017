@@ -2,11 +2,15 @@ from config import *
 import pykka
 import telegram
 import sys
+import threading
 
 class TelegramBot(pykka.ThreadingActor):
-	def __init__(self, bot):
+	def __init__(self, bot, main_actor):
 		super(TelegramBot, self).__init__()
+		self.main_actor = main_actor
 		self.bot = bot
+		self.proxy = self.actor_ref.proxy()
+		self.chats = {}
 		self._set_webhook()
 
 	def _set_webhook(self):
@@ -18,7 +22,40 @@ class TelegramBot(pykka.ThreadingActor):
 			print('Your webhook URL has been set to "{}"'.format(TELEGRAM_WEBHOOK_URL))
 	
 	def update(self, update):
+		chat_id = update.message.chat.id
+		if chat_id in self.chats:
+			self.chats[chat_id].update(update)
+		else:
+			chat_actor = TelegramChatActor.start(self.proxy, chat_id, self.main_actor).proxy()
+			self.chats[chat_id] = chat_actor
+			chat_actor.update(update)
+		print(update)
+	
+	def send_text(self, chat_id, message):
+		self.bot.send_message(chat_id, message)
+
+
+class TelegramChatActor(pykka.ThreadingActor):
+	def __init__(self, parent, id, main_actor):
+		super(TelegramChatActor, self).__init__()
+		self.parent = parent
+		self.main_actor = main_actor
+		self.id = id
+		self.proxy = self.actor_ref.proxy()
+		self.updated = threading.Event()
+		self.buffer = None
+		self.main_actor.register(self.proxy)
+
+	def update(self, update):
 		text = update.message.text
 		chat_id = update.message.chat.id
-		self.bot.send_message(chat_id, text)
-		print(update)
+		self.buffer = {'id': chat_id, 'text': text}
+		self.updated.set()
+	
+	def send_text(self, message):
+		self.parent.send_message(self.id, message)
+	
+	def wait(self):
+		self.updated.wait()
+		self.updated.clear()
+		return self.buffer
