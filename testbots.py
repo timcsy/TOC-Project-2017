@@ -19,31 +19,21 @@ class TelegramBot(pykka.ThreadingActor):
 			print('Your webhook URL has been set to "{}"'.format(TELEGRAM_WEBHOOK_URL))
 	
 	def on_receive(self, message):
-		return 'Hello'
-
-class Greeter(pykka.ThreadingActor):
-	def __init__(self):
-		super(Greeter, self).__init__()
-	
-	def on_receive(self, message):
-		return 'Hi there!'
+		update = message.update
+		print(update)
 
 
 
 app = Flask(__name__)
 bot = telegram.Bot(token=TELEGRAM_API_TOKEN)
 tele_bot = TelegramBot.start(bot)
-actor_ref = Greeter.start()
 
 @app.route('/hook', methods=['POST'])
 def webhook_handler():
 	update = telegram.Update.de_json(request.get_json(force=True), bot)
-	answer = tele_bot.ask(update)
-	print(answer)
+	tele_bot.ask({'update': update})
 	return 'ok'
 
 if __name__ == "__main__":
-	answer = tele_bot.ask({'msg': 'Hi?'})
-	print(answer)
 	app.run()
 	tele_bot.stop()
