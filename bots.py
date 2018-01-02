@@ -27,7 +27,7 @@ class TelegramBot(pykka.ThreadingActor):
 		else:
 			chat_actor = TelegramChatActor.start(self, chat_id, self.main_actor).proxy()
 			self.chats[chat_id] = chat_actor
-			self.main_actor.register(chat_actor).get()
+			self.main_actor.register(chat_actor)
 			# chat_actor.update(update)
 		print(update)
 	
