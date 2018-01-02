@@ -49,6 +49,7 @@ class TelegramChatActor(pykka.ThreadingActor):
 		text = update.message.text
 		chat_id = update.message.chat.id
 		self.buffer = {'id': chat_id, 'text': text}
+		print(self.buffer)
 		self.updated.set()
 	
 	def send_text(self, message):
