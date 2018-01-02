@@ -31,7 +31,7 @@ tele_bot = TelegramBot.start(bot)
 @app.route('/hook', methods=['POST'])
 def webhook_handler():
 	update = telegram.Update.de_json(request.get_json(force=True), bot)
-	tele_bot.ask({'update': update})
+	tele_bot.tell({'update': update})
 	return 'ok'
 
 if __name__ == "__main__":
