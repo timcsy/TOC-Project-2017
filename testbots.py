@@ -2,7 +2,7 @@ from flask import Flask, request, send_file
 from bots import *
 
 app = Flask(__name__)
-tele_bot = TelegramBot().start()
+tele_bot = TelegramBot.start()
 
 @app.route('/hook', methods=['POST'])
 def webhook_handler():
