@@ -42,6 +42,7 @@ class TelegramChatActor(pykka.ThreadingActor):
 		self.main_actor = main_actor
 		self.id = id
 		self.updated = threading.Event()
+		self.updated.clear()
 		self.buffer = None
 
 	def update(self, update):
@@ -54,9 +55,10 @@ class TelegramChatActor(pykka.ThreadingActor):
 		self.parent.send_message(self.id, message)
 
 	def get_id(self):
-		return id
+		return self.id
 	
 	def wait(self):
+		print(waiting)
 		self.updated.wait()
 		self.updated.clear()
 		return self.buffer
