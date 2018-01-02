@@ -45,5 +45,6 @@ class Scheduler:
 				self.add(task)
 	
 	def list_tasks(self):
-		for i in range(len(self.queue)):
-			print(str(i) + ': ' + self.queue[i][1].name)
+		# for i in range(len(self.queue)):
+		# 	print(str(i) + ': ' + self.queue[i][1].name)
+		return self.queue
