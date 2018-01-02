@@ -19,7 +19,7 @@ class TelegramBot(pykka.ThreadingActor):
 			print('Your webhook URL has been set to "{}"'.format(TELEGRAM_WEBHOOK_URL))
 	
 	def on_receive(self, message):
-		print(message)
+		return 'Hello'
 
 class Greeter(pykka.ThreadingActor):
 	def __init__(self):
@@ -42,8 +42,7 @@ def webhook_handler():
 	return 'ok'
 
 if __name__ == "__main__":
-	answer = actor_ref.ask({'msg': 'Hi?'})
+	answer = tele_bot.ask({'msg': 'Hi?'})
 	print(answer)
-	tele_bot.tell('Hello')
 	app.run()
 	tele_bot.stop()
