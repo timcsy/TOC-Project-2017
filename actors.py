@@ -67,6 +67,7 @@ class IOActor(pykka.ThreadingActor):
 		elif self.state == 'add':
 			interval = int(msg)
 			self.scheduler.add(Task(self.bot, interval))
+			self.bot.send_text('start')
 			self.state = 'start'
 		elif self.state == 'cancel':
 			task_num = int(msg)
