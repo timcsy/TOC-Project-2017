@@ -18,14 +18,19 @@ class Task:
 
 class Scheduler:
 	def __init__(self):
+		self.tasks = []
 		self.queue = []
+		self.thread = None
 		
 	def add(self, task):
+		self.tasks.append(task)
 		now = time.time()
 		next_time = task.next_time()
 		heapq.heappush(self.queue, (now + next_time, task))
-		if len(self.queue) == 1:
-			threading.Timer(next_time, self.run).start()
+		self.next()
+		# if len(self.queue) == 1:
+		# 	self.thread = threading.Timer(next_time, self.run)
+		# 	self.thread.start()
 
 	def cancel(self, task):
 		task.canceled = True
@@ -35,16 +40,28 @@ class Scheduler:
 			heapq.heappop(self.queue)
 		if len(self.queue) > 0:
 			timestamp, task = heapq.heappop(self.queue)
-			now = time.time()
-			next_time = 0
-			if len(self.queue) > 0 and self.queue[0][0] > now:
-				next_time = self.queue[0][0] - now
-			threading.Timer(next_time, self.run).start()
+			self.next()
+			# now = time.time()
+			# next_time = 0
+			# if len(self.queue) > 0 and self.queue[0][0] > now:
+			# 	next_time = self.queue[0][0] - now
+			# self.thread = threading.Timer(next_time, self.run)
+			# self.thread.start()
 			task.start()
 			if task.canceled != True:
 				self.add(task)
 	
+	def next(self):
+		self.thread.cancel()
+		if len(self.queue) > 0:
+			now = time.time()
+			next_time = 0
+			if self.queue[0][0] > now:
+				next_time = self.queue[0][0] - now
+			self.thread = threading.Timer(next_time, self.run)
+			self.thread.start()
+	
 	def list_tasks(self):
 		# for i in range(len(self.queue)):
 		# 	print(str(i) + ': ' + self.queue[i][1].name)
-		return self.queue
+		return self.tasks
