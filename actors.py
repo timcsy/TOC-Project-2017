@@ -18,7 +18,7 @@ class ScheduleActor(pykka.ThreadingActor):
 				self.bot.send_text('enter interval: ')
 			elif msg == 'list':
 				list = self.scheduler.list_tasks()
-				s = ''
+				s = 'tasks:\n'
 				for i in range(len(list)):
 					if list[i].canceled == False:
 						s += str(i) + ': ' + str(list[i].interval) + '\n'
