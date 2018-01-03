@@ -14,7 +14,7 @@ class Task:
 		self.bot.send_text("Task " + str(self.interval) + ' expired')
 
 	def next_time(self):
-		return self.interval * 60
+		return self.interval
 
 class Scheduler:
 	def __init__(self):
