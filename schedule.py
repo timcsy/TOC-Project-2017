@@ -52,7 +52,8 @@ class Scheduler:
 				self.add(task)
 	
 	def next(self):
-		self.thread.cancel()
+		if not self.thread == None:
+			self.thread.cancel()
 		if len(self.queue) > 0:
 			now = time.time()
 			next_time = 0
