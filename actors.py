@@ -43,7 +43,6 @@ class IOActor(pykka.ThreadingActor):
 		super(ScheduleActor, self).__init__()
 		self.bot = bot
 		self.tape = []
-		self.
 		self.scheduler = Scheduler()
 		self.state = 'start'
 
