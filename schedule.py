@@ -27,7 +27,9 @@ class Scheduler:
 		now = time.time()
 		next_time = task.next_time()
 		heapq.heappush(self.queue, (now + next_time, task))
+		print("in")
 		self.next()
+		print("out")
 		# if len(self.queue) == 1:
 		# 	self.thread = threading.Timer(next_time, self.run)
 		# 	self.thread.start()
@@ -60,7 +62,9 @@ class Scheduler:
 			if self.queue[0][0] > now:
 				next_time = self.queue[0][0] - now
 			self.thread = threading.Timer(next_time, self.run)
+			print("start")
 			self.thread.start()
+			print("next")
 	
 	def list_tasks(self):
 		# for i in range(len(self.queue)):
