@@ -24,13 +24,7 @@ class Scheduler:
 		
 	def add(self, task):
 		self.tasks.append(task)
-		now = time.time()
-		next_time = task.next_time()
-		heapq.heappush(self.queue, (now + next_time, task))
-		self.next()
-		# if len(self.queue) == 1:
-		# 	self.thread = threading.Timer(next_time, self.run)
-		# 	self.thread.start()
+		self.push(task)
 
 	def cancel(self, task):
 		task.canceled = True
@@ -49,7 +43,16 @@ class Scheduler:
 			# self.thread.start()
 			task.start()
 			if task.canceled != True:
-				self.add(task)
+				self.push(task)
+	
+	def push(self, task):
+		now = time.time()
+		next_time = task.next_time()
+		heapq.heappush(self.queue, (now + next_time, task))
+		self.next()
+		# if len(self.queue) == 1:
+		# 	self.thread = threading.Timer(next_time, self.run)
+		# 	self.thread.start()
 	
 	def next(self):
 		if not self.thread == None:
